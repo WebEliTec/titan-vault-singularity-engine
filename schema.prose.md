@@ -48,12 +48,12 @@ Declares the **is-a hierarchy** over the concepts; a subconcept inherits its par
 
 #### 2.1.3 Properties
 
-Declares each concept's own data fields. Every field carries:
+Declares each concept's own data fields, each named once within that concept. Every field carries:
 
-- a **type** — a primitive datatype (`String`, `Integer`, `Boolean`, `ID`) or an enumerated value type from `## Concepts`;
-- a **cardinality** — `1`, `0..1`, `1..N`, or `0..N` (subsuming *required* vs *optional*).
+- a **type** — a primitive datatype (`String`, `Integer`, `Boolean`, `ID`) or an enumerated value type from `## Concepts`, never an entity (entity links live in `## Relations`);
+- a **cardinality** — `=1` (required), `≤1` (optional), or `≥1` (multi-valued); in general a `Number` bound `=k`, `≤k`, `≥k`.
 
-Each is a typed, cardinality-restricted role on its concept: `Concept ⊑ (n) field.Type`.
+Each is a typed, cardinality-restricted role on its concept — a `Number` bound on the field: `Concept ⊑ =1 field.Type`.
 
 #### 2.1.4 Relations
 
@@ -120,8 +120,8 @@ Two invariants over the `structure.formal.md` example above:
 ```
 # Invariants
 
-I1  ∀ v, a₁, a₂.  hasAttribute(v, a₁) ∧ hasAttribute(v, a₂) ∧ key(a₁) = key(a₂)  →  a₁ = a₂
-I2  ∀ e, v₁, v₂.  hasAttributeSetVersion(e, v₁) ∧ hasAttributeSetVersion(e, v₂) ∧ version(v₁) = version(v₂)  →  v₁ = v₂
+I1  ∀ v, a1, a2.  hasAttribute(v, a1) ∧ hasAttribute(v, a2) ∧ key(a1) = key(a2)  →  a1 = a2
+I2  ∀ e, v1, v2.  hasAttributeSetVersion(e, v1) ∧ hasAttributeSetVersion(e, v2) ∧ version(v1) = version(v2)  →  v1 = v2
 ```
 
 `I1` — within one attribute-set version, no two attributes share a key. `I2` — within one entity class, no two attribute-set versions share a version number.
@@ -156,7 +156,7 @@ Named rule-shapes, each a definition whose parameters are **formulas**:  `Respon
 
 #### 2.3.3 Rules
 
-A flat list of **named temporal formulas** (`D1`, `D2`, …) — the constraints on the system's runs — written using the events and templates above. In `dynamics.formal.md` the rules use the names directly; `dynamics.prose.md` renders the same rules with a plain-English gloss.
+A flat list of **named temporal formulas** (`D1`, `D2`, …) — the constraints on the system's runs — written using the events and templates above. Like invariants, every rule is **closed** — every variable quantified. In `dynamics.formal.md` the rules use the names directly; `dynamics.prose.md` renders the same rules with a plain-English gloss.
 
 #### 2.3.4 Example
 
