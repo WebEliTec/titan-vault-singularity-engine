@@ -66,7 +66,7 @@ Declares the **domain relations** — the associative (non-taxonomic) links betw
 - a **domain** and **range** — its source and target concepts;
 - a **cardinality on each side** — the range count per domain instance, and the domain count per range instance (each `1`, `0..1`, `1..N`, or `0..N`).
 
-Each is declared once, the multiplicity sitting beside the concept it counts: `role : Domain [d] → [r] Range` — `[r]` is the range count per domain instance, `[d]` the domain count per range instance.
+Each is declared once, the multiplicity sitting beside the concept it counts: `role : Domain [d] → [r] Range` — `[r]` is the range count per domain instance, `[d]` the domain count per range instance. For example `r : A [0..1] → [1..N] B` reads: each `A` relates to **1..N** `B` (the range count `[r]`); each `B` relates to **0..1** `A` (the domain count `[d]`).
 
 #### 2.1.5 Example
 
@@ -126,9 +126,10 @@ Two invariants over the `structure.formal.md` example above:
 
 I1  ∀ v, a1, a2.  hasAttribute(v, a1) ∧ hasAttribute(v, a2) ∧ key(a1) = key(a2)  →  a1 = a2
 I2  ∀ e, v1, v2.  hasAttributeSetVersion(e, v1) ∧ hasAttributeSetVersion(e, v2) ∧ version(v1) = version(v2)  →  v1 = v2
+I3  ∀ v.  AttributeSetVersion(v) → version(v) ≥ 1
 ```
 
-`I1` — within one attribute-set version, no two attributes share a key. `I2` — within one entity class, no two attribute-set versions share a version number.
+`I1` — within one attribute-set version, no two attributes share a key. `I2` — within one entity class, no two attribute-set versions share a version number. `I3` — every attribute-set version's number is at least 1 (an `Integer` comparison).
 
 ### 2.3 dynamics.formal.md
 
@@ -186,4 +187,11 @@ D2  ∀v. G( commit(v) → G ¬∃a. addAttribute(v, a) )
 
 ## 3. Prose Specification
 
-The plain-language mirror of §2, derived from it.
+Each `*.prose.md` is the plain-language mirror of its `*.formal.md`, derived from it and serving as the human's review surface. The contract:
+
+- it mirrors the formal's **headings** one-to-one;
+- it carries **one entry per formal id** — each concept, field, relation, `I#`, `D#` — under the same id;
+- it **adds and drops nothing**: every formal statement appears, and no constraint is invented;
+- it renders relation multiplicities per §2.1.4, and rules with their template label plus a plain-language gloss.
+
+The formal is canonical; the prose is re-derived and re-checked after **any** formal edit. Drift between the tiers is a defect, not a variant.

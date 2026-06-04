@@ -56,7 +56,7 @@ Formula       ::= Atom | "¬" Formula | Formula Connective Formula | Quantifier 
 ### Constraints
 
 - **W5 — Unique ids.** Invariant ids (`I1`, `I2`, …) are distinct.
-- **W6 — Grounded.** Every predicate in an invariant resolves to a declared concept (arity 1) or relation (arity 2); every function to a declared **required** (`=1`) property (arity 1) — an optional or multi-valued property appears instead as a binary predicate. Arities match the structure. A bare `Value` term is a member of a declared enumerated value type.
+- **W6 — Grounded.** Every predicate in an invariant resolves to a declared concept (arity 1) or relation (arity 2); every function to a declared **required** (`=1`) property (arity 1) — an optional or multi-valued property appears instead as a binary predicate. Arities match the structure. A bare `Value` term is a member of a declared enumerated value type. Order comparisons (`<`, `≤`, `>`, `≥`) relate only `Integer`-typed terms (a numeral, or an `Integer`-valued property function).
 - **W7 — Closed.** Every invariant is a closed formula — no free variables.
 
 ## dynamics.formal.md
@@ -95,7 +95,7 @@ Name | Param ::= Ident
 ### Constraints
 
 - **W8 — Acyclic.** The `≝` definitions (events and templates) are acyclic — no definition's body refers, directly or transitively, to the name it defines — so every defined name expands to raw LTLf over the structure's vocabulary.
-- **W9 — Grounded.** Every atom resolves to the structure (predicate = declared concept of arity 1 or relation of arity 2; function = declared **required** (`=1`) property). Every applied name resolves to a definition of matching arity — an **event** (declared in `## Events`) is applied to terms; a **template** (declared in `## Templates`) is applied to formulas. A bare `Value` term is a member of a declared enumerated value type.
+- **W9 — Grounded.** Every atom resolves to the structure (predicate = declared concept of arity 1 or relation of arity 2; function = declared **required** (`=1`) property). Every applied name resolves to a definition of matching arity — an **event** (declared in `## Events`) is applied to terms; a **template** (declared in `## Templates`) is applied to formulas. A bare `Value` term is a member of a declared enumerated value type. Order comparisons (`<`, `≤`, `>`, `≥`) relate only `Integer`-typed terms.
 - **W10 — Closed.** Every rule (`D1`, `D2`, …) is a closed formula — no free variables.
 
 ## Common
@@ -103,8 +103,10 @@ Name | Param ::= Ident
 The first-order core and lexis shared by the grammars above. (`Concept`, `Role`, `Field`, `Value` are the signature names a `structure.formal.md` declares; a `Value` is a member of an enumerated value type.)
 
 ```
-Atom        ::= Pred "(" Term ("," Term)* ")" | Term "=" Term
-Term        ::= Var | Value | Func "(" Term ")"
+Atom        ::= Pred "(" Term ("," Term)* ")" | Term Compare Term
+Term        ::= Var | Value | Numeral | Func "(" Term ")"
+Compare     ::= "=" | "<" | "≤" | ">" | "≥"
+Numeral     ::= "-"? Nat
 Pred        ::= Concept | Role | Field
 Func        ::= Field
 Quantifier  ::= "∀" | "∃"

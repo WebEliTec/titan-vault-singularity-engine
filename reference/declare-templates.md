@@ -1,6 +1,6 @@
 # DECLARE templates
 
-Catalogue of standard **DECLARE** constraint templates — each a named, parameterised **LTLf** formula. This is a **lookup menu**, *not* a spec dependency: when authoring a `dynamics.formal.md`, copy the **used subset** of these definitions into that document's `## Definitions`, so each version snapshot stays self-contained. The catalogue is *open* — a new template is just a new LTLf formula (this is what "extending DECLARE" means).
+Catalogue of standard **DECLARE** constraint templates — each a named, parameterised **LTLf** formula. This is a **lookup menu**, *not* a spec dependency: when authoring a `dynamics.formal.md`, copy the **used subset** of these definitions into that document's `## Templates` section, so each version snapshot stays self-contained. The catalogue is *open* — a new template is just a new LTLf formula (this is what "extending DECLARE" means).
 
 DECLARE is by Pesic & van der Aalst; the resource-assignment extension (RALph / MP-Declare) is Daniel's university work.
 
