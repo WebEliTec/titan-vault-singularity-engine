@@ -88,7 +88,7 @@ TraitAttribute ⊑ Attribute
 
 EntityClass          ⊑ =1 name.String
 AttributeSetVersion  ⊑ =1 version.Integer ⊓ =1 status.VersionStatus
-Attribute            ⊑ =1 key.String ⊓ =1 required.Boolean
+Attribute            ⊑ =1 key.String ⊓ =1 required.Boolean ⊓ ≤1 maxLength.Integer
 
 ## Relations
 
@@ -127,9 +127,10 @@ Two invariants over the `structure.formal.md` example above:
 I1  ∀ v, a1, a2.  hasAttribute(v, a1) ∧ hasAttribute(v, a2) ∧ key(a1) = key(a2)  →  a1 = a2
 I2  ∀ e, v1, v2.  hasAttributeSetVersion(e, v1) ∧ hasAttributeSetVersion(e, v2) ∧ version(v1) = version(v2)  →  v1 = v2
 I3  ∀ v.  AttributeSetVersion(v) → version(v) ≥ 1
+I4  ∀ a, n.  maxLength(a, n) → n > 0
 ```
 
-`I1` — within one attribute-set version, no two attributes share a key. `I2` — within one entity class, no two attribute-set versions share a version number. `I3` — every attribute-set version's number is at least 1 (an `Integer` comparison).
+`I1` — within one attribute-set version, no two attributes share a key. `I2` — within one entity class, no two attribute-set versions share a version number. `I3` — every attribute-set version's number is at least 1 (a *required* `Integer` property, used as a function). `I4` — an attribute's max length, if set, is positive (an *optional* `Integer` property, used as a binary predicate — the value variable `n` is `Integer`-typed).
 
 ### 2.3 dynamics.formal.md
 

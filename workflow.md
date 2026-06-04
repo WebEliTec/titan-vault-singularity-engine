@@ -36,7 +36,8 @@ Each `*.prose.md` is derived from its `*.formal.md` and is the human's review su
 - mirror the formal's **headings** one-to-one;
 - carry **one entry per formal id** — each concept, field, relation, `I#`, `D#` — under the same id;
 - **add and drop nothing**: every formal statement appears, no constraint is invented;
-- render relation multiplicities per `schema.prose.md` §2.1.4, and rules with their template label plus a plain-language gloss.
+- render relation multiplicities per `schema.prose.md` §2.1.4, and rules with their template label plus a plain-language gloss;
+- present each entry as a short bullet — the id, a plain-language statement, and the formal form in backticks for reference.
 
 After **any** formal edit, re-derive and re-check the prose. Drift between the tiers is a defect, not a variant.
 
@@ -44,21 +45,28 @@ After **any** formal edit, re-derive and re-check the prose. Drift between the t
 
 For the dynamics layer, copy the **used subset** of `reference/declare-templates.md` into the version's `## Templates` section, and coin custom templates the same way. Copy only what's used; the snapshot stays self-contained.
 
-## 5. Marking work-in-progress
+## 5. Status
 
-While a version is being authored, mark it `status: draft` (a line at the top of each file, or a `STATUS` file in the version directory). Remove it (or set `status: final`) when done. **Absence of a marker means final.**
+A version carries a `status:` line (top of each file, or a `STATUS` file in the version directory):
+
+- `draft` — being authored;
+- `ready-for-review` — the authoring agent has finished and self-verified (§6); awaiting human review;
+- `final` — a human has reviewed and accepted it.
 
 ## 6. Definition of done
 
-A version is done when:
+Done is split between the agent and the human.
+
+**The authoring agent's part** (→ `ready-for-review`) — fully self-checkable:
 
 - all six files exist — `formal/` + `prose/` × {structure, invariants, dynamics};
 - each formal document **parses** against `schema.formal.md`;
 - all **well-formedness constraints `W1–W10`** hold (verify each against `schema.formal.md`);
 - each prose document **mirrors** its formal counterpart 1:1 (§3);
-- the model is **faithful to the requirements**;
-- the **human has reviewed and accepted the prose**.
+- the model is **faithful to the requirements**.
+
+**The human's part** (→ `final`): review the prose and accept it — or return corrections, which fix the *formal* (canonical) and re-derive the prose.
 
 ## 7. Committing
 
-Once done, commit the version as **one atomic commit**, message `model: add v<N> — <one-line summary>`. One commit per version.
+Commit a version as **one atomic commit** once it is `final` (after human acceptance) — message `model: add v<N> — <one-line summary>`. One commit per version.
