@@ -28,9 +28,9 @@ Type          ::= Primitive | Concept
 Primitive     ::= "String" | "Integer" | "Boolean" | "ID"
 Concept       ::= Name
 Name | Field | Role | Value ::= Ident
-Ident         ::= Letter (Letter | Digit)*
-Nat           ::= Digit+
 ```
+
+`Ident`, `Nat` as in `## Common`.
 
 ### Constraints
 
@@ -47,23 +47,70 @@ With **D** = the concepts declared in `## Concepts` (entities ∪ enumerated val
 
 ```
 InvariantsDoc ::= "# Invariants" Invariant+
-Invariant     ::= Id Formula
-Id            ::= "I" Nat
+Invariant     ::= "I" Nat Formula
 Formula       ::= Atom | "¬" Formula | Formula Connective Formula | Quantifier VarList "." Formula | "(" Formula ")"
-Atom          ::= Pred "(" Term ("," Term)* ")" | Term "=" Term
-Term          ::= Var | Func "(" Term ")"
-Pred          ::= Concept | Role | Field
-Func          ::= Field
-Quantifier    ::= "∀" | "∃"
-Connective    ::= "∧" | "∨" | "→" | "↔"
-VarList       ::= Var ("," Var)*
-Var           ::= Ident
 ```
 
-`Concept`, `Role`, `Field`, `Ident`, `Nat` are as defined in the `structure.formal.md` grammar above.
+`Atom`, `Connective`, `Quantifier`, `VarList`, `Nat` as in `## Common`.
 
 ### Constraints
 
 - **W5 — Unique ids.** Invariant ids (`I1`, `I2`, …) are distinct.
 - **W6 — Grounded.** Every predicate in an invariant resolves to a declared concept (arity 1) or relation (arity 2); every function to a declared **required** (`=1`) property (arity 1) — an optional or multi-valued property appears instead as a binary predicate. Arities match the structure.
 - **W7 — Closed.** Every invariant is a closed formula — no free variables.
+
+## dynamics.formal.md
+
+### Grammar
+
+```
+DynamicsDoc  ::= "# Dynamics" Events Templates Rules
+
+Events       ::= "## Events" EventDef*
+EventDef     ::= Name "(" VarList ")" "≝" Formula
+
+Templates    ::= "## Templates" TemplateDef*
+TemplateDef  ::= Name "(" ParamList ")" "≝" Formula
+
+Rules        ::= "## Rules" Rule+
+Rule         ::= "D" Nat Formula
+
+Formula      ::= Atom
+               | Name "(" ArgList ")"            -- use of an event or template
+               | Param
+               | "¬" Formula
+               | ("G" | "F" | "X") Formula
+               | Formula "U" Formula
+               | Formula Connective Formula
+               | Quantifier VarList "." Formula
+               | "(" Formula ")"
+Arg          ::= Term | Formula
+ArgList      ::= Arg ("," Arg)*
+ParamList    ::= Param ("," Param)*
+Name | Param ::= Ident
+```
+
+`Atom`, `Term`, `Connective`, `Quantifier`, `VarList`, `Nat`, `Ident` as in `## Common`. An `EventDef`'s parameters are term variables; a `TemplateDef`'s are formula parameters.
+
+### Constraints
+
+- **W8 — Acyclic.** The `≝` definitions (events and templates) are acyclic — no definition's body refers, directly or transitively, to the name it defines — so every defined name expands to raw LTLf over the structure's vocabulary.
+- **W9 — Grounded.** Every atom resolves to the structure (predicate = declared concept of arity 1 or relation of arity 2; function = declared **required** (`=1`) property). Every applied name resolves to a definition of matching arity — an **event** (declared in `## Events`) is applied to terms; a **template** (declared in `## Templates`) is applied to formulas.
+- **W10 — Closed.** Every rule (`D1`, `D2`, …) is a closed formula — no free variables.
+
+## Common
+
+The first-order core and lexis shared by the grammars above. (`Concept`, `Role`, `Field` are the signature names a `structure.formal.md` declares.)
+
+```
+Atom        ::= Pred "(" Term ("," Term)* ")" | Term "=" Term
+Term        ::= Var | Func "(" Term ")"
+Pred        ::= Concept | Role | Field
+Func        ::= Field
+Quantifier  ::= "∀" | "∃"
+Connective  ::= "∧" | "∨" | "→" | "↔"
+VarList     ::= Var ("," Var)*
+Var         ::= Ident
+Ident       ::= Letter (Letter | Digit)*
+Nat         ::= Digit+
+```

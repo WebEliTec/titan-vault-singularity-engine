@@ -126,6 +126,60 @@ I2  ∀ e, v₁, v₂.  hasAttributeSetVersion(e, v₁) ∧ hasAttributeSetVersi
 
 `I1` — within one attribute-set version, no two attributes share a key. `I2` — within one entity class, no two attribute-set versions share a version number.
 
+### 2.3 dynamics.formal.md
+
+Specifies **what happens over time**. Where `invariants.formal.md` constrains a single state, `dynamics.formal.md` constrains *sequences* of states — a run of the system — ruling out the histories that must never occur. Its formulas use the structure's predicates plus four temporal operators:
+
+- `G φ` — *globally*: φ holds at every instant;
+- `F φ` — *finally*: φ holds at some later instant;
+- `X φ` — *next*: φ holds at the following instant;
+- `φ U ψ` — *until*: φ holds until ψ does.
+
+Formulas may also quantify over domain elements (`∀v`, `∃a`) — *first-order* temporal logic, the data-aware form. Dynamics introduces **no new primitives**: every formula is built from the structure's vocabulary and these operators. It starts with a `# Dynamics` main-heading and follows this invariant heading scheme:
+
+```
+# Dynamics
+## Events
+## Templates
+## Rules
+```
+
+`## Events` and `## Templates` are *definitions* (`name ≝ formula`) — abbreviations that keep the rules concise and drive the prose rendering; `## Rules` are the constraints themselves. Vocabulary first, then constraints — the same shape as `structure.formal.md`. All definitions must be **acyclic**, so every name expands away to raw LTLf over the structure.
+
+#### 2.3.1 Events
+
+Named state-changes — the things the system can *do* — each a definition whose parameters are **terms** (domain elements):  `commit(v) ≝ status(v) = draft ∧ X status(v) = committed`. Domain-specific.
+
+#### 2.3.2 Templates
+
+Named rule-shapes, each a definition whose parameters are **formulas**:  `Response(a, b) ≝ G(a → F b)`. These are the subset of standard DECLARE templates this version uses — the full catalogue is the lookup menu in [`reference/declare-templates.md`](reference/declare-templates.md), copy in only what's used — plus any **custom** shapes we coin, e.g. `Monotone(p) ≝ G(p → G p)`.
+
+#### 2.3.3 Rules
+
+A flat list of **named temporal formulas** (`D1`, `D2`, …) — the constraints on the system's runs — written using the events and templates above. In `dynamics.formal.md` the rules use the names directly; `dynamics.prose.md` renders the same rules with a plain-English gloss.
+
+#### 2.3.4 Example
+
+```
+# Dynamics
+
+## Events
+
+commit(v)           ≝  status(v) = draft ∧ X status(v) = committed
+addAttribute(v, a)  ≝  ¬ hasAttribute(v, a) ∧ X hasAttribute(v, a)
+
+## Templates
+
+Monotone(p)         ≝  G( p → G p )
+
+## Rules
+
+D1  ∀v. Monotone( status(v) = committed )
+D2  ∀v. G( commit(v) → G ¬∃a. addAttribute(v, a) )
+```
+
+`D1` — once committed, a version stays committed (the "never returns to draft" rule; temporal, so it lives here, not in `invariants.formal.md`), stated with the `Monotone` template. `D2` — committing freezes the attribute set: a committed version never gains an attribute.
+
 ## 3. Prose Specification
 
 The plain-language mirror of §2, derived from it.
