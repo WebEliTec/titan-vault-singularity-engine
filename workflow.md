@@ -47,7 +47,7 @@ For the dynamics layer, copy the **used subset** of `reference/declare-templates
 
 ## 5. Status
 
-A version carries a `status:` line (top of each file, or a `STATUS` file in the version directory):
+A version carries a `STATUS` file in its directory — kept out of the schema-governed documents, which begin at their `# Heading` — holding one of:
 
 - `draft` — being authored;
 - `ready-for-review` — the authoring agent has finished and self-verified (§6); awaiting human review;
