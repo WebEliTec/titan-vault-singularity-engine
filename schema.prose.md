@@ -4,20 +4,24 @@ The Singularity Engine's **prescriptive model**: the single, authoritative state
 
 ## 1. Versioning
 
-The model is **living**: it evolves through **version directories**, each holding one version of the model.
+The model is **living**: it evolves through **version directories** under `model/`, each holding one version of the model. The schema (this file and `schema.formal.md`) lives at the vault root, outside `model/`.
 
 ```
-model/
+titan-vault/
   README.md
-  <version>/
-    formal/
-      structure.formal.md
-      invariants.formal.md
-      dynamics.formal.md
-    prose/
-      structure.prose.md
-      invariants.prose.md
-      dynamics.prose.md
+  schema.formal.md
+  schema.prose.md
+  reference/
+  model/
+    <version>/
+      formal/
+        structure.formal.md
+        invariants.formal.md
+        dynamics.formal.md
+      prose/
+        structure.prose.md
+        invariants.prose.md
+        dynamics.prose.md
 ```
 
 For each, the **`*.formal.md`** is its precise, formal statement; the **`*.prose.md`** is the same in plain language. The formal is specified first; the prose is derived from it.

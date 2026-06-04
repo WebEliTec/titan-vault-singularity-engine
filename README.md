@@ -1,9 +1,10 @@
-# Model
+# Titan Vault
 
-This directory holds the Singularity Engine's **prescriptive model**.
+The Singularity Engine's **prescriptive model**: the schema that defines a model document, and the versioned model content itself. The model is authored here first; the code is brought into conformance with it.
 
 ## Contents
 
-- **`schema.formal.md`** — the formal specification of a `structure.formal.md` document: its **grammar** — the admissible syntax — and its **constraints** — the well-formedness rules a grammatically valid document must additionally satisfy.
-- **`schema.prose.md`** — its plain-language companion, together with the model's versioning and formal/prose conventions.
-- **`<version>/`** — one directory per model version, each holding `formal/` and `prose/`.
+- **`schema.formal.md`** — the formal specification of a model document: its **grammar** (the admissible syntax) and its **constraints** (the well-formedness rules).
+- **`schema.prose.md`** — the plain-language companion to the schema, with the versioning and formal/prose conventions.
+- **`reference/`** — the DECLARE template catalogue: a lookup menu for the dynamics layer.
+- **`model/`** — the model itself: one directory per version, each holding `formal/` and `prose/`.
