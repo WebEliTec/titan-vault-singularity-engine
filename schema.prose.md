@@ -62,7 +62,7 @@ Declares the **domain relations** — the associative (non-taxonomic) links betw
 - a **domain** and **range** — its source and target concepts;
 - a **cardinality on each side** — the range count per domain instance, and the domain count per range instance (each `1`, `0..1`, `1..N`, or `0..N`).
 
-Each is an object role, cardinality-restricted on the role and its inverse: `Domain ⊑ (n) rel.Range` and `Range ⊑ (m) rel⁻.Domain`.
+Each is declared once, the multiplicity sitting beside the concept it counts: `role : Domain [d] → [r] Range` — `[r]` is the range count per domain instance, `[d]` the domain count per range instance.
 
 #### 2.1.5 Example
 
@@ -88,11 +88,8 @@ Attribute            ⊑ =1 key.String ⊓ =1 required.Boolean
 
 ## Relations
 
-EntityClass          ⊑ ∀ hasAttributeSetVersion.AttributeSetVersion
-AttributeSetVersion  ⊑ =1 hasAttributeSetVersion⁻.EntityClass
-
-AttributeSetVersion  ⊑ ∀ hasAttribute.Attribute
-Attribute            ⊑ =1 hasAttribute⁻.AttributeSetVersion
+hasAttributeSetVersion : EntityClass [1] → [0..N] AttributeSetVersion
+hasAttribute           : AttributeSetVersion [1] → [0..N] Attribute
 ```
 
 ## 3. Prose Specification
