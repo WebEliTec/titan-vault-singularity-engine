@@ -46,3 +46,13 @@ model/
 
 A version is a self-contained snapshot of the model — read its files and you have the model entire. It is a full copy, not a delta from the previous version.
 
+## Authoring a version
+
+### The schema
+
+Read `schema.formal.md` and `schema.prose.md` first: together they define a model document — its grammar and its well-formedness constraints (`W1–W10`). Every formal file must conform to these shapes, and not for style: the formal is machine-readable, so a document that strays will not parse. The schema governs every version.
+
+### The loop
+
+Authoring is a loop. You write the formal domain model — the `*.formal.md` documents — and derive its prose mirror, the `*.prose.md` documents, from it; the human then reviews that prose. You change the formal first; the prose follows, always re-derived from it and never hand-corrected. So when review turns up a fault, you do not touch the prose — you fix the formal and re-derive the prose from it. The formal domain model is the single source of truth, and the prose never drifts from it.
+
