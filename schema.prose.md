@@ -9,7 +9,6 @@ The model is **living**: it evolves through **version directories** under `model
 ```
 titan-vault/
   README.md
-  workflow.md
   schema.formal.md
   schema.prose.md
   reference/
@@ -198,7 +197,7 @@ So conformance is **two passes**: a context-free parse, then name/arity/cardinal
 
 ## 3. Prose Specification
 
-Each `*.prose.md` is the plain-language mirror of its `*.formal.md`, derived from it and serving as the human's review surface. This contract is the **single source of truth** for the formal↔prose mirror; `workflow.md` defers to it. The contract:
+Each `*.prose.md` is the plain-language mirror of its `*.formal.md`, derived from it and serving as the human's review surface. This contract is the **single source of truth** for the formal↔prose mirror. The contract:
 
 - it mirrors the formal's **headings** one-to-one;
 - it carries **one entry per formal id** — each concept, field, relation, event, template, `I#`, `D#` — under the same id (a comma-separated `## Concepts` line expands to one bullet per concept; an event or template entry is keyed by its name, with its `≝` body in backticks; a copied DECLARE template may reuse the catalogue's own gloss);

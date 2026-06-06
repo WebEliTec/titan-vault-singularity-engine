@@ -56,3 +56,59 @@ Read `schema.formal.md` and `schema.prose.md` first: together they define a mode
 
 Authoring is a loop. You write the formal domain model — the `*.formal.md` documents — and derive its prose mirror, the `*.prose.md` documents, from it; the human then reviews that prose. You change the formal first; the prose follows, always re-derived from it and never hand-corrected. So when review turns up a fault, you do not touch the prose — you fix the formal and re-derive the prose from it. The formal domain model is the single source of truth, and the prose never drifts from it.
 
+### Starting a version
+
+You author the first version, `v1`, from scratch. Every later version begins as a full copy of the one before it — `cp -r model/v<N> model/v<N+1>` — which you then edit.
+
+### Order
+
+Author the three views in causal order:
+
+> **structure → invariants → dynamics**
+
+Structure comes first: it alone introduces vocabulary — entities, properties, relations — and the other two views are written in that vocabulary, adding no terms of their own. Invariants come before dynamics as the static precedes the temporal: an invariant constrains a single state, a dynamic rule a whole run, and a run is a sequence of states. Within each view, write the formal before its prose.
+
+### The prose mirror
+
+What makes a prose mirror faithful is fixed by the contract in `schema.prose.md` §3 — its single source of truth. In short: the prose mirrors the formal's headings one-to-one, carries one entry per formal id, adds and drops nothing, and renders each entry as a short bullet — the id, a plain-language statement, and the formal form in backticks. Re-derive and re-check it after any change to the formal; drift between the two is a defect, not a variant.
+
+### Templates
+
+The dynamic view writes its rules using **DECLARE templates** — named, reusable shapes for temporal rules, such as *Response* (every occurrence of one event is eventually followed by another). The standard shapes are catalogued in `reference/declare-templates.md`; copy the subset you use into the dynamics view's `## Templates` section — along with any a copied shape is built from (e.g. `Succession` pulls in `Response` and `Precedence`) — so the version stays self-contained. Whether you copy such a dependency or inline it is your choice: it changes the prose surface, not the meaning, so the difference is a variant, not a defect. You may coin custom shapes the same way.
+
+### Status
+
+A version carries a `STATUS` file holding one of three values:
+
+- `draft` — you are authoring it;
+- `ready-for-review` — you have finished and self-verified;
+- `final` — a human has reviewed and accepted it.
+
+You reach `ready-for-review` only after self-verifying: all six files exist, each formal parses and resolves against the schema, every `W1–W10` holds, each prose mirrors its formal, and the model is faithful to the requirements. The human grants `final` by accepting the prose — or returns corrections, which you fix in the formal and re-derive.
+
+### Committing
+
+Commit a version only once it is `final`, as a single atomic commit — message `model: add v<N> — <one-line summary>`. One commit per version.
+
+## Layout
+
+The vault's layout:
+
+```
+titan-vault/
+  README.md
+  schema.formal.md
+  schema.prose.md
+  reference/
+    declare-templates.md
+  model/
+    v1/
+    v2/
+    …
+```
+
+- **`README.md`** — this front door.
+- **`schema.formal.md` / `schema.prose.md`** — the schema every version conforms to: a model document's grammar and well-formedness constraints (`W1–W10`), formal and in plain language.
+- **`reference/declare-templates.md`** — the catalogue of DECLARE templates the dynamic view copies from.
+- **`model/`** — the versioned domain model, one directory per version (see Versioning for a version's contents).
+
